@@ -1,17 +1,66 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { useState, useEffect } from 'react';
+import ReactDom from 'react-dom';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import Loading from './Components/Loading';
+import Parawisata from './Components/Parawisata';
+const url = 'https://dhan-api.netlify.app/api/2-tour-api';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const App = () => {
+  const [wisata, setWisata] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+  // remove item parawisata
+  const removeWisata = (id) => {
+    const removeItems = wisata.filter((wisata_id) => wisata_id.id !== id);
+    // update
+    setWisata(removeItems);
+  };
+
+  const fetchWisata = async () => {
+    try {
+      const resp = await fetch(url);
+      const data = await resp.json();
+      // update
+      setWisata(data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchWisata();
+  }, []);
+
+  if (loading) {
+    return (
+      <main>
+        <Loading />
+      </main>
+    );
+  }
+
+  // if wisata empty field again with fetch
+  if (wisata.length === 0) {
+    return (
+      <main>
+        <div className='title2'>
+          <div>
+            <h3>kembali ke awal?</h3>
+            <button className='back-btn' onClick={fetchWisata}>
+              klik disini
+            </button>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  return (
+    <main>
+      <Parawisata wisata={wisata} removeWisata={removeWisata} />
+    </main>
+  );
+};
+
+ReactDom.render(<App />, document.getElementById('root'));
