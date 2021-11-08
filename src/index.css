@@ -124,10 +124,12 @@ img {
 .back-btn {
   display: block;
   padding: 1rem 2.5rem;
+  width: 100%;
+  font-size: 1.5rem;
   background: #2e3138;
   color: #fff;
   text-transform: uppercase;
-  letter-spacing: 1.2px;
+  letter-spacing: 0.5rem;
   border: none;
   border: 1px solid #ddd;
   border-radius: 0.5rem;
@@ -143,11 +145,13 @@ img {
 @media screen and (min-width: 720px) {
   .wisata_grid {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    align-items: start;
   }
 }
 
 @media screen and (min-width: 920px) {
   .wisata_grid {
     grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    align-items: start;
   }
 }
